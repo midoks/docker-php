@@ -8,6 +8,8 @@ FROM		centos:centos7.1.1503
 MAINTAINER  midoks <midoks@163.com>
 
 
+RUN rpm --rebuilddb && yum install -y --enablerepo=epel pwgen python-pip
+RUN pip install --upgrade pip
 
 RUN pip install supervisor
 ADD supervisord.conf /etc/supervisord.conf
