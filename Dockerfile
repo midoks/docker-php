@@ -19,6 +19,9 @@ RUN rpm --rebuilddb && yum install -y deltarpm && yum -y makecache fast
 RUN rpm --rebuilddb && yum install -y curl wget tar bzip2 unzip vim-enhanced passwd sudo yum-utils hostname net-tools rsync man && yum install -y gcc gcc-c++ git make automake cmake patch logrotate python-devel libpng-devel libjpeg-devel
 
 
+#RUN yum clean all && yum -y swap fakesystemd systemd
+#RUN yum clean all
+
 RUN yum -y install epel-release
 RUN rpm --rebuilddb && yum install -y python-pip
 RUN pip install --upgrade pip
