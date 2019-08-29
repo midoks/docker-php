@@ -11,7 +11,6 @@ ENV TZ "Asia/Shanghai"
 
 ADD aliyun-mirror.repo /etc/yum.repos.d/CentOS-Base.repo
 ADD aliyun-epel.repo /etc/yum.repos.d/epel.repo
-ADD openresty.repo /etc/yum.repos.d/openresty.repo
 
 
 RUN rpm --rebuilddb && yum install -y deltarpm && yum -y makecache fast
