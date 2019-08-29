@@ -33,13 +33,20 @@ RUN mkdir -p /etc/supervisor.conf.d && mkdir -p /var/log/supervisor
 
 RUN rpm --rebuilddb && yum install -y pcre pcre-devel openssl openssl-devel
 RUN mkdir -p /root/source
-#RUN wget -O /root/source/openresty-1.15.8.1.tar.gz https://openresty.org/download/openresty-1.15.8.1.tar.gz
-#RUN cd /root/source && tar -zxvf openresty-1.15.8.1.tar.gz
+RUN wget -O /root/source/openresty-1.15.8.1.tar.gz https://openresty.org/download/openresty-1.15.8.1.tar.gz
+RUN cd /root/source && tar -zxvf openresty-1.15.8.1.tar.gz
+RUN cd /root/source/openresty-1.15.8.1 && ./configure --prefix=/usr/local/openresty \
+	--with-http_v2_module \
+	--with-http_stub_status_module \
+	--with-ipv6 && make && make install
+
+
+RUN wget -O /root/source/php-7.1.31.tar.bz2 https://www.php.net/distributions/php-7.1.31.tar.bz2
+RUN cd /root/source && tar -xjf php-7.1.31.tar.bz2
 #RUN cd /root/source/openresty-1.15.8.1 && ./configure --prefix=/usr/local/openresty \
 #	--with-http_v2_module \
 #	--with-http_stub_status_module \
 #	--with-ipv6 && make && make install
-
 
 
 EXPOSE 22
