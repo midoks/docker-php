@@ -45,3 +45,4 @@ RUN cd /root/source/openresty-1.15.8.1 && ./configure --prefix=/usr/local/openre
 
 
 ENTRYPOINT ["/usr/bin/supervisord", "-n", "-c", "/etc/supervisord.conf"]
+
