@@ -43,10 +43,30 @@ RUN cd /root/source/openresty-1.15.8.1 && ./configure --prefix=/usr/local/openre
 
 RUN wget -O /root/source/php-7.1.31.tar.bz2 https://www.php.net/distributions/php-7.1.31.tar.bz2
 RUN cd /root/source && tar -xjf php-7.1.31.tar.bz2
-#RUN cd /root/source/openresty-1.15.8.1 && ./configure --prefix=/usr/local/openresty \
-#	--with-http_v2_module \
-#	--with-http_stub_status_module \
-#	--with-ipv6 && make && make install
+
+RUN rpm --rebuilddb && yum install -y libxml2 libxml2-devel
+
+RUN cd /root/source/php-7.1.31 && ./configure --prefix=/usr/local/php \
+	--exec-prefix=/usr/local/php \
+	--with-config-file-path=/usr/local/php/etc \
+	--enable-mysqlnd \
+	--with-mysqli=mysqlnd \
+	--with-pdo-mysql=mysqlnd \
+	--without-iconv \
+	--enable-zip \
+	--enable-mbstring \
+	--enable-opcache \
+	--enable-ftp \
+	--enable-wddx \
+	--enable-soap \
+	--enable-sockets \
+	--enable-simplexml \
+	--enable-posix \
+	--enable-sysvmsg \
+	--enable-sysvsem \
+	--enable-sysvshm \
+	--enable-fpm \
+	&& make && make install
 
 
 EXPOSE 22
