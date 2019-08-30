@@ -15,7 +15,11 @@ ADD repo/aliyun-epel.repo /etc/yum.repos.d/epel.repo
 
 RUN rpm --rebuilddb && yum install -y deltarpm && yum -y makecache fast
 
-RUN rpm --rebuilddb && yum install -y curl wget tar bzip2 unzip vim-enhanced passwd sudo yum-utils hostname net-tools rsync man && yum install -y gcc gcc-c++ git make automake cmake patch logrotate python-devel libpng-devel libjpeg-devel
+RUN rpm --rebuilddb && yum install -y curl wget tar bzip2 unzip vim-enhanced \
+	passwd sudo yum-utils hostname net-tools rsync man \
+	&& yum install -y gcc gcc-c++ git make automake cmake patch logrotate python-devel libpng-devel libjpeg-devel \
+	&& yum install -y pcre pcre-devel openssl openssl-devel \
+	
 
 
 RUN rpm --rebuilddb && yum swap -y fakesystemd systemd && yum clean all
@@ -29,10 +33,8 @@ RUN pip install supervisor
 ADD supervisord/supervisord.conf /etc/supervisord.conf
 
 RUN mkdir -p /etc/supervisor.conf.d && mkdir -p /var/log/supervisor
-
-
-RUN rpm --rebuilddb && yum install -y pcre pcre-devel openssl openssl-devel
 RUN mkdir -p /root/source
+
 RUN wget -O /root/source/openresty-1.15.8.1.tar.gz https://openresty.org/download/openresty-1.15.8.1.tar.gz
 RUN cd /root/source && tar -zxvf openresty-1.15.8.1.tar.gz
 RUN cd /root/source/openresty-1.15.8.1 && ./configure --prefix=/usr/local/openresty \
@@ -41,14 +43,14 @@ RUN cd /root/source/openresty-1.15.8.1 && ./configure --prefix=/usr/local/openre
 	--with-ipv6 && make && make install
 
 
+RUN yum install -y libxml2 libxml2-devel
+
 RUN wget -O /root/source/php-7.1.31.tar.bz2 https://www.php.net/distributions/php-7.1.31.tar.bz2
 RUN cd /root/source && tar -xjf php-7.1.31.tar.bz2
 
-RUN rpm --rebuilddb && yum install -y libxml2 libxml2-devel
-
-RUN cd /root/source/php-7.1.31 && ./configure --prefix=/usr/local/php \
-	--exec-prefix=/usr/local/php \
-	--with-config-file-path=/usr/local/php/etc \
+RUN cd /root/source/php-7.1.31 && ./configure --prefix=/usr/local/php71 \
+	--exec-prefix=/usr/local/php71 \
+	--with-config-file-path=/usr/local/php71/etc \
 	--enable-mysqlnd \
 	--with-mysqli=mysqlnd \
 	--with-pdo-mysql=mysqlnd \
@@ -72,11 +74,11 @@ RUN groupadd www
 RUN useradd -g www -s /sbin/nologin www
 
 ADD conf/nginx.conf  /usr/local/openresty/nginx/conf/nginx.conf
-ADD conf/php-fpm.conf /usr/local/php/etc/php-fpm.conf
+ADD conf/php-fpm.conf /usr/local/php71/etc/php-fpm.conf
 
 RUN mkdir -p /usr/local/openresty/nginx/conf/vhost
 ADD supervisord/openresty.conf /etc/supervisor.conf.d/openresty.conf
-ADD supervisord/php-fpm.conf /etc/supervisor.conf.d/php-fpm.conf
+ADD supervisord/php-fpm.conf /etc/supervisor.conf.d/php71-fpm.conf
 
 EXPOSE 22
 
