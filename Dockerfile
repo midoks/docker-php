@@ -68,6 +68,8 @@ RUN cd /root/source/php-7.1.31 && ./configure --prefix=/usr/local/php \
 	--enable-fpm \
 	&& make && make install
 
+RUN groupadd www
+RUN useradd -g www -s /sbin/nologin www
 
 ADD conf/nginx.conf  /usr/local/openresty/conf/nginx.conf
 ADD conf/php-fpm.conf /usr/local/php/etc/php-fpm.conf
