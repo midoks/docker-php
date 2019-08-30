@@ -18,8 +18,7 @@ RUN rpm --rebuilddb && yum install -y deltarpm && yum -y makecache fast
 RUN rpm --rebuilddb && yum install -y curl wget tar bzip2 unzip vim-enhanced \
 	passwd sudo yum-utils hostname net-tools rsync man \
 	&& yum install -y gcc gcc-c++ git make automake cmake patch logrotate python-devel libpng-devel libjpeg-devel \
-	&& yum install -y pcre pcre-devel openssl openssl-devel \
-	
+	&& yum install -y pcre pcre-devel openssl openssl-devel
 
 
 RUN rpm --rebuilddb && yum swap -y fakesystemd systemd && yum clean all
@@ -43,7 +42,7 @@ RUN cd /root/source/openresty-1.15.8.1 && ./configure --prefix=/usr/local/openre
 	--with-ipv6 && make && make install
 
 
-RUN yum install -y libxml2 libxml2-devel
+RUN rpm --rebuilddb && yum install -y libxml2 libxml2-devel
 
 RUN wget -O /root/source/php-7.1.31.tar.bz2 https://www.php.net/distributions/php-7.1.31.tar.bz2
 RUN cd /root/source && tar -xjf php-7.1.31.tar.bz2
