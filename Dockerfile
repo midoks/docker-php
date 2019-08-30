@@ -71,11 +71,11 @@ RUN cd /root/source/php-7.1.31 && ./configure --prefix=/usr/local/php \
 RUN groupadd www
 RUN useradd -g www -s /sbin/nologin www
 
-ADD conf/nginx.conf  /usr/local/openresty/conf/nginx.conf
+ADD conf/nginx.conf  /usr/local/openresty/nginx/conf/nginx.conf
 ADD conf/php-fpm.conf /usr/local/php/etc/php-fpm.conf
 
-RUN mkdir -p /usr/local/openresty/conf/vhost
-ADD supervisord/nginx.conf /etc/supervisor.conf.d/nginx.conf
+RUN mkdir -p /usr/local/openresty/nginx/conf/vhost
+ADD supervisord/openresty.conf /etc/supervisor.conf.d/openresty.conf
 ADD supervisord/php-fpm.conf /etc/supervisor.conf.d/php-fpm.conf
 
 EXPOSE 22
