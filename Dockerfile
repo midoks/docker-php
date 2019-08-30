@@ -9,8 +9,8 @@ MAINTAINER  midoks <midoks@163.com>
 
 ENV TZ "Asia/Shanghai"
 
-ADD aliyun-mirror.repo /etc/yum.repos.d/CentOS-Base.repo
-ADD aliyun-epel.repo /etc/yum.repos.d/epel.repo
+ADD repo/aliyun-mirror.repo /etc/yum.repos.d/CentOS-Base.repo
+ADD repo/aliyun-epel.repo /etc/yum.repos.d/epel.repo
 
 
 RUN rpm --rebuilddb && yum install -y deltarpm && yum -y makecache fast
@@ -26,7 +26,7 @@ RUN rpm --rebuilddb && yum install -y python-pip
 RUN pip install --upgrade pip
 
 RUN pip install supervisor
-ADD supervisord.conf /etc/supervisord.conf
+ADD supervisord/supervisord.conf /etc/supervisord.conf
 
 RUN mkdir -p /etc/supervisor.conf.d && mkdir -p /var/log/supervisor
 
@@ -67,6 +67,10 @@ RUN cd /root/source/php-7.1.31 && ./configure --prefix=/usr/local/php \
 	--enable-sysvshm \
 	--enable-fpm \
 	&& make && make install
+
+
+ADD conf/nginx.conf  /usr/local/openresty/conf/nginx.conf
+ADD conf/php-fpm.conf /usr/local/php/etc/php-fpm.conf
 
 
 EXPOSE 22
