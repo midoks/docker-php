@@ -12,23 +12,24 @@ ENV TZ "Asia/Shanghai"
 ADD repo/aliyun-mirror.repo /etc/yum.repos.d/CentOS-Base.repo
 ADD repo/aliyun-epel.repo /etc/yum.repos.d/epel.repo
 
+RUN groupadd www
+RUN useradd -g www -s /sbin/nologin www
 
+RUN rpm --rebuilddb && yum -y install epel-release
 RUN rpm --rebuilddb && yum install -y deltarpm && yum -y makecache fast
-
-RUN rpm --rebuilddb && yum install -y curl wget tar bzip2 unzip vim-enhanced \
-	passwd sudo yum-utils hostname net-tools rsync man \
-	&& yum install -y gcc gcc-c++ git make automake cmake patch logrotate python-devel libpng-devel libjpeg-devel \
-	&& yum install -y pcre pcre-devel openssl openssl-devel
-
-
 RUN rpm --rebuilddb && yum swap -y fakesystemd systemd && yum clean all
 RUN rpm --rebuilddb && yum update -y  && yum clean all
 
-RUN yum -y install epel-release
 RUN rpm --rebuilddb && yum install -y python-pip
-RUN pip install --upgrade pip
+RUN pip install --upgrade pip && pip install supervisor
 
-RUN pip install supervisor
+RUN rpm --rebuilddb && yum install -y curl wget tar bzip2 unzip vim-enhanced \
+	passwd sudo yum-utils hostname net-tools rsync man gcc gcc-c++ git make \
+	automake cmake patch logrotate python-devel libpng-devel libjpeg-devel \
+	pcre pcre-devel openssl openssl-devel libxml2 libxml2-devel
+
+
+
 ADD supervisord/supervisord.conf /etc/supervisord.conf
 
 RUN mkdir -p /etc/supervisor.conf.d && mkdir -p /var/log/supervisor
@@ -41,8 +42,6 @@ RUN cd /root/source/openresty-1.15.8.1 && ./configure --prefix=/usr/local/openre
 	--with-http_stub_status_module \
 	--with-ipv6 && make && make install
 
-
-RUN rpm --rebuilddb && yum install -y libxml2 libxml2-devel
 
 RUN wget -O /root/source/php-7.1.31.tar.bz2 https://www.php.net/distributions/php-7.1.31.tar.bz2
 RUN cd /root/source && tar -xjf php-7.1.31.tar.bz2
@@ -69,8 +68,6 @@ RUN cd /root/source/php-7.1.31 && ./configure --prefix=/usr/local/php71 \
 	--enable-fpm \
 	&& make && make install
 
-RUN groupadd www
-RUN useradd -g www -s /sbin/nologin www
 
 ADD conf/nginx.conf  /usr/local/openresty/nginx/conf/nginx.conf
 ADD conf/php-fpm.conf /usr/local/php71/etc/php-fpm.conf
