@@ -72,11 +72,15 @@ RUN cd /root/source/php-7.1.31 && ./configure --prefix=/usr/local/php71 \
 RUN mkdir -p /usr/local/openresty/nginx/conf/vhost
 
 ADD conf/nginx.conf  /usr/local/openresty/nginx/conf/nginx.conf
+ADD vhost/   /usr/local/openresty/nginx/vhost/
+ADD supervisord/openresty.conf /etc/supervisor.conf.d/openresty.conf
+
+
+ADD conf/php-fpm 	 /usr/local/php71/php-fpm
 ADD conf/php-fpm.conf /usr/local/php71/etc/php-fpm.conf
 ADD conf/www.conf /usr/local/php71/etc/php-fpm.d/www.conf
-
-ADD supervisord/openresty.conf /etc/supervisor.conf.d/openresty.conf
 ADD supervisord/php-fpm.conf /etc/supervisor.conf.d/php71-fpm.conf
+
 
 EXPOSE 22
 
