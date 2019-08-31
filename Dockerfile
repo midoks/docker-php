@@ -70,9 +70,12 @@ RUN cd /root/source/php-7.1.31 && ./configure --prefix=/usr/local/php71 \
 
 
 RUN mkdir -p /usr/local/openresty/nginx/conf/vhost
+RUN mkdir -p /www
+
+ADD www/	/www/
 
 ADD conf/nginx.conf  /usr/local/openresty/nginx/conf/nginx.conf
-ADD vhost/   /usr/local/openresty/nginx/vhost/
+ADD vhost/   /usr/local/openresty/nginx/conf/vhost/
 ADD supervisord/openresty.conf /etc/supervisor.conf.d/openresty.conf
 
 
