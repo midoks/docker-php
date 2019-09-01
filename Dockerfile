@@ -75,6 +75,7 @@ RUN cd /root/source/php-7.1.31 && ./configure --prefix=/usr/local/php71 \
 	&& make && make install
 
 RUN cd /usr/local/php71/bin && ./pecl install yaf
+RUN cd /usr/local/php71/bin && ./pecl install swoole
 
 
 RUN mkdir -p /usr/local/openresty/nginx/conf/vhost
