@@ -70,7 +70,11 @@ RUN cd /root/source/php-7.1.31 && ./configure --prefix=/usr/local/php71 \
 	--enable-sysvsem \
 	--enable-sysvshm \
 	--enable-fpm \
+	--with-openssl-dir=/usr/lib64/openssl \
+	--with-openssl \
 	&& make && make install
+
+RUN cd /usr/local/php71/bin && ./pecl install yaf
 
 
 RUN mkdir -p /usr/local/openresty/nginx/conf/vhost

@@ -1,1 +1,1 @@
-ngx.say("hhh");
+ngx.say("lua");
