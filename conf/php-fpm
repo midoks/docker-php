@@ -22,7 +22,7 @@ echo "" > ${exec_prefix}/var/log/php-fpm.log
 
 php_fpm_BIN=${exec_prefix}/sbin/php-fpm
 php_fpm_CONF=${prefix}/etc/php-fpm.conf
-php_fpm_PID=${PIDDIR}/tmp/php71-fpm.pid
+php_fpm_PID=${PIDDIR}/tmp/php72-fpm.pid
 
 
 php_opts="--fpm-config $php_fpm_CONF --pid $php_fpm_PID"
