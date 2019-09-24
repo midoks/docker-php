@@ -37,8 +37,8 @@ RUN mkdir -p /root/source
 
 RUN wget -O /root/source/openresty-1.15.8.1.tar.gz https://openresty.org/download/openresty-1.15.8.1.tar.gz
 
-RUN wget -O /root/source/php-7.1.31.tar.bz2 https://www.php.net/distributions/php-7.1.31.tar.bz2
-RUN cd /root/source && tar -xjf php-7.1.31.tar.bz2
+RUN wget -O /root/source/php-7.2.22.tar.bz2 https://www.php.net/distributions/php-7.2.22.tar.bz2
+RUN cd /root/source && tar -xjf php-7.2.22.tar.bz2
 
 
 
@@ -50,9 +50,9 @@ RUN cd /root/source/openresty-1.15.8.1 && ./configure --prefix=/usr/local/openre
 	--with-ipv6 && make && make install
 
 
-RUN cd /root/source/php-7.1.31 && ./configure --prefix=/usr/local/php71 \
-	--exec-prefix=/usr/local/php71 \
-	--with-config-file-path=/usr/local/php71/etc \
+RUN cd /root/source/php-7.2.22 && ./configure --prefix=/usr/local/php72 \
+	--exec-prefix=/usr/local/php72 \
+	--with-config-file-path=/usr/local/php72/etc \
 	--enable-mysqlnd \
 	--with-mysqli=mysqlnd \
 	--with-pdo-mysql=mysqlnd \
@@ -74,8 +74,8 @@ RUN cd /root/source/php-7.1.31 && ./configure --prefix=/usr/local/php71 \
 	--with-openssl \
 	&& make && make install
 
-RUN cd /usr/local/php71/bin && ./pecl install yaf
-RUN cd /usr/local/php71/bin && ./pecl install swoole
+RUN cd /usr/local/php72/bin && ./pecl install yaf
+RUN cd /usr/local/php72/bin && ./pecl install swoole
 
 
 RUN mkdir -p /usr/local/openresty/nginx/conf/vhost
@@ -86,10 +86,10 @@ ADD conf/nginx.conf  /usr/local/openresty/nginx/conf/nginx.conf
 ADD vhost/   /usr/local/openresty/nginx/conf/vhost/
 ADD supervisord/openresty.conf /etc/supervisor.conf.d/openresty.conf
 
-ADD conf/php-fpm 	 /usr/local/php71/php-fpm
-ADD conf/php-fpm.conf /usr/local/php71/etc/php-fpm.conf
-ADD conf/www.conf /usr/local/php71/etc/php-fpm.d/www.conf
-ADD supervisord/php-fpm.conf /etc/supervisor.conf.d/php71-fpm.conf
+ADD conf/php-fpm 	 /usr/local/php72/php-fpm
+ADD conf/php-fpm.conf /usr/local/php72/etc/php-fpm.conf
+ADD conf/www.conf /usr/local/php72/etc/php-fpm.d/www.conf
+ADD supervisord/php-fpm.conf /etc/supervisor.conf.d/php72-fpm.conf
 
 EXPOSE 22
 ENTRYPOINT ["/usr/bin/supervisord", "-n", "-c", "/etc/supervisord.conf"]
